@@ -24,17 +24,23 @@ export class UsersMongoRepo implements Repo<User> {
     debug('query');
     const data = await UserModel.find().populate(
       'friends',
-      { friends: 0 },
+      { friends: 0, enemies: 0 },
       'enemies',
-      { enemies: 0 }
+      { friends: 0, enemies: 0 }
     );
     return data;
   }
 
   async queryId(id: string): Promise<User> {
     debug('queryId');
-    const data = await UserModel.findById(id);
-    if (!data) throw new HTTPError(404, 'Not found', 'Id not found in queryId');
+    const data = await UserModel.findById(id).populate(
+      'friends',
+      { friends: 0, enemies: 0 },
+      'enemies',
+      { friends: 0, enemies: 0 }
+    );
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'User not found in queryId');
     return data;
   }
 
