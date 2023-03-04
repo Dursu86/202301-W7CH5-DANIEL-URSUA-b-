@@ -9,6 +9,6 @@ export default {
     'index.ts',
     'app.ts',
     'routers',
-    './src/repository/users.mongo.model.ts',
+    'src/repository/*.*.model.*',
   ],
 };
