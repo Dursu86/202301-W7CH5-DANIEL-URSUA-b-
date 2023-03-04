@@ -4,11 +4,11 @@ import { User } from '../entities/user';
 const userSchema = new Schema<User>({
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   age: {
     type: String,
-    required: true,
+    required: false,
   },
   gender: {
     type: String,
