@@ -65,6 +65,36 @@ export class UsersMongoRepo implements Repo<User> {
     return data;
   }
 
+  async addFriend(userId: User['id'], friend: User): Promise<User> {
+    debug('Add friend');
+    const user = await UserModel.findById(userId).populate(
+      'friends',
+      { friends: 0, enemies: 0 },
+      'enemies',
+      { friends: 0, enemies: 0 }
+    );
+    if (!user || !friend)
+      throw new HTTPError(400, 'Bad Request', 'User not found');
+    user.friends.push(friend);
+    UserModel.updateOne({ id: userId }, user);
+    return user;
+  }
+
+  async addEnemy(userId: User['id'], enemy: User): Promise<User> {
+    debug('Add enemy');
+    const user = await UserModel.findById(userId).populate(
+      'friends',
+      { friends: 0, enemies: 0 },
+      'enemies',
+      { friends: 0, enemies: 0 }
+    );
+    if (!user || !enemy)
+      throw new HTTPError(400, 'Bad Request', 'User not found');
+    user.enemies.push(enemy);
+    UserModel.updateOne({ id: userId }, user);
+    return user;
+  }
+
   async delete(id: string): Promise<void> {
     debug('delete');
     const data = await UserModel.findByIdAndDelete(id);
