@@ -16,7 +16,6 @@ export async function authorized(
         'Token not found',
         'Token not found in Authorized interceptor'
       );
-    const userId = req.info.id;
 
     next();
   } catch (error) {

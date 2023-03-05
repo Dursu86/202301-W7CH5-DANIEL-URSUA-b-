@@ -2,7 +2,6 @@ import { NextFunction, Response } from 'express';
 import { HTTPError } from '../errors/errors.js';
 import { RequestPlus } from '../interceptors/logged.js';
 import { UsersMongoRepo } from '../repository/users.mongo.repo.js';
-import { Auth } from '../services/auth.js';
 import { UsersController } from './users.controllers.js';
 
 jest.mock('../config.js', () => ({
