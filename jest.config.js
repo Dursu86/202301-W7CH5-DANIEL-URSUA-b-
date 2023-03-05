@@ -10,5 +10,6 @@ export default {
     'app.ts',
     'routers',
     'src/repository/*.*.model.*',
+    'config.ts',
   ],
 };
