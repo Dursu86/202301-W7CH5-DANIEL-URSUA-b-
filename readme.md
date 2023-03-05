@@ -1,0 +1,3 @@
+- modelo de datos
+- entidad -> modelo/schema
+- Repo
