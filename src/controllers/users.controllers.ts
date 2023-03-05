@@ -4,6 +4,7 @@ import { User } from '../entities/user';
 import { Repo } from '../repository/repo.interface';
 import { HTTPError } from '../errors/errors.js';
 import { Auth, PayloadToken } from '../services/auth.js';
+import { RequestPlus } from '../interceptors/logged';
 const debug = createDebug('W7B:controller:users');
 export class UsersController {
   constructor(public repo: Repo<User>) {
@@ -63,6 +64,40 @@ export class UsersController {
       resp.json({
         token,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addFriend(req: RequestPlus, resp: Response, next: NextFunction) {
+    try {
+      debug('Add friend');
+      if (!req.info || !req.body.id)
+        throw new HTTPError(401, 'Unauthorized', 'Information incomplete');
+      const user = await this.repo.queryId(req.info.id);
+      if (!user)
+        throw new HTTPError(401, 'Unathorized', 'Information incomplete');
+      if (user.friends.find(req.body.id))
+        throw new Error('User already registered');
+      user.friends.push(req.body.id);
+      this.repo.update(user);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addEnemy(req: RequestPlus, resp: Response, next: NextFunction) {
+    try {
+      debug('Add enemy');
+      if (!req.info || !req.body.id)
+        throw new HTTPError(401, 'Unauthorized', 'Information incomplete');
+      const user = await this.repo.queryId(req.info.id);
+      if (!user)
+        throw new HTTPError(401, 'Unathorized', 'Information incomplete');
+      if (user.enemies.find(req.body.id))
+        throw new Error('User already registered');
+      user.enemies.push(req.body.id);
+      this.repo.update(user);
     } catch (error) {
       next(error);
     }
